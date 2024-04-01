@@ -1,7 +1,4 @@
--- Gui to Lua
--- Version: 3.2
-
--- Instances:
+loadstring
 
 local Notice = Instance.new("ScreenGui")
 local Hold = Instance.new("Frame")
