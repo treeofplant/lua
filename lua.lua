@@ -15,7 +15,7 @@ local TextButton = Instance.new("TextButton")
 local UIListLayout_2 = Instance.new("UIListLayout")
 local TextBox = Instance.new("TextBox")
 local TextLabel_2 = Instance.new("TextLabel")
-local UIListLayout_3 = Instance.new("UIListLayout")
+--local UIListLayout_3 = Instance.new("UIListLayout")
 
 --Properties:
 
@@ -100,10 +100,10 @@ TextLabel_2.Text = "Once copied click \"I am done\""
 TextLabel_2.TextColor3 = Color3.fromRGB(255, 0, 0)
 TextLabel_2.TextSize = 16.000
 
-UIListLayout_3.Parent = Notice
-UIListLayout_3.HorizontalAlignment = Enum.HorizontalAlignment.Center
-UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout_3.VerticalAlignment = Enum.VerticalAlignment.Center
+--UIListLayout_3.Parent = Notice
+--UIListLayout_3.HorizontalAlignment = Enum.HorizontalAlignment.Center
+--UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
+--UIListLayout_3.VerticalAlignment = Enum.VerticalAlignment.Center
 
 -- Scripts:
 
