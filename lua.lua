@@ -1,6 +1,6 @@
 coroutine.wrap(function()
 pcall(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/treeofplant/lua/main/luaa.lua"))
+loadstring(game:HttpGet("https://raw.githubusercontent.com/treeofplant/lua/main/luaa.lua"))()
 end)
 end)()
 
