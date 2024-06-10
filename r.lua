@@ -142,7 +142,7 @@ local board = {
 local playerToWin = uh
 
 local move = findBestMove(board, playerToWin)
-game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = ("Best Move: X: (" .. move[2] .. ", Y: " .. move[1] .. ")")
+game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = "Best Move: (" .. move[2] .. ", " .. move[1] .. ")"
 
 end
 
