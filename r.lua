@@ -120,11 +120,15 @@ end
 
 
 
+
 function gettic(thing)
-    if game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[thing].Text ~= "X" or game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[thing].Text ~= "O" then
-        return " "
-    end
-   game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[thing].Text
+local ya = game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[thing].Text
+
+if ya == "" then
+
+ya = " "
+end
+return ya
 end
 
 
