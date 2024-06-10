@@ -1,6 +1,6 @@
 -- Configuration
 local mainCharacter = getgenv().Lo
-print("1")
+print(getgenv().Lo)
 -- Function to check if a player has won
 local function checkWin(board, player)
     -- Horizontal check
