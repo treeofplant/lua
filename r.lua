@@ -260,7 +260,7 @@ local function findBestMove(board, depth, maximizingPlayer)
 end
 
 
-function get(column, row)
+function getYY(column, row)
     U = {"X", "O"}
     return U[math.random(#U)]
 end
