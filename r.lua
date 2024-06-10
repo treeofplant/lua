@@ -150,7 +150,11 @@ end
 function doting()
 -- Configuration
 local mainCharacter = uh
-print(uh)
+if uh == "X" then
+        mainCharacter = "O"
+    else
+        mainCharacter = "X"
+    end
 -- Function to check if a player has won
 local function checkWin(board, player)
     -- Horizontal check
