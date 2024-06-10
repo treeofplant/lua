@@ -1,4 +1,148 @@
 local uh = "X"
+function yomonk()
+
+function hasWon(board, player)
+    -- Check rows
+    for i = 1, 3 do
+        if board[i][1] == player and board[i][2] == player and board[i][3] == player then
+            return true
+        end
+    end
+    -- Check columns
+    for i = 1, 3 do
+        if board[1][i] == player and board[2][i] == player and board[3][i] == player then
+            return true
+        end
+    end
+    -- Check diagonals
+    if board[1][1] == player and board[2][2] == player and board[3][3] == player then
+        return true
+    end
+    if board[1][3] == player and board[2][2] == player and board[3][1] == player then
+        return true
+    end
+    return false
+end
+
+-- Function to check if the board is full
+function isBoardFull(board)
+    for i = 1, 3 do
+        for j = 1, 3 do
+            if board[i][j] == " " then
+                return false
+            end
+        end
+    end
+    return true
+end
+
+-- Function to evaluate the board for the AI
+function evaluate(board, playerToWin)
+    local opponent = switchPlayer(playerToWin)
+    if hasWon(board, playerToWin) then
+        return 10
+    elseif hasWon(board, opponent) then
+        return -10
+    else
+        return 0
+    end
+end
+
+-- Function to switch player
+function switchPlayer(player)
+    if player == "X" then
+        return "O"
+    else
+        return "X"
+    end
+end
+
+-- Function to find the best move for the AI
+function findBestMove(board, playerToWin)
+    local bestScore = -math.huge
+    local move = {}
+    for i = 1, 3 do
+        for j = 1, 3 do
+            if board[i][j] == " " then
+                board[i][j] = playerToWin
+                local score = minimax(board, 0, false, playerToWin, playerToWin)
+                board[i][j] = " "
+                if score > bestScore then
+                    bestScore = score
+                    move = {i, j}
+                end
+            end
+        end
+    end
+    return move
+end
+
+-- Minimax algorithm with alpha-beta pruning
+function minimax(board, depth, isMaximizing, playerToWin, currentPlayer)
+    local opponent = switchPlayer(playerToWin)
+
+    if hasWon(board, playerToWin) then
+        return 10 - depth
+    elseif hasWon(board, opponent) then
+        return -10 + depth
+    elseif isBoardFull(board) then
+        return 0
+    end
+
+    if isMaximizing then
+        local bestScore = -math.huge
+        for i = 1, 3 do
+            for j = 1, 3 do
+                if board[i][j] == " " then
+                    board[i][j] = playerToWin
+                    local score = minimax(board, depth + 1, false, playerToWin, opponent)
+                    board[i][j] = " "
+                    bestScore = math.max(bestScore, score)
+                end
+            end
+        end
+        return bestScore
+    else
+        local bestScore = math.huge
+        for i = 1, 3 do
+            for j = 1, 3 do
+                if board[i][j] == " " then
+                    board[i][j] = opponent
+                    local score = minimax(board, depth + 1, true, playerToWin, playerToWin)
+                    board[i][j] = " "
+                    bestScore = math.min(bestScore, score)
+                end
+            end
+        end
+        return bestScore
+    end
+end
+
+
+
+function gettic(thing)
+    if game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[thing].Text ~= "X" or game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[thing].Text ~= "O" then
+        return " "
+    end
+   game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[thing].Text
+end
+
+
+
+local board = {
+    {gettic("1_1"), gettic("1_2"), gettic("1_3")},
+    {gettic("2_1"), gettic("2_2"), gettic("2_3")},
+    {gettic("3_1"), gettic("3_2"), gettic("3_3")}
+}
+
+local playerToWin = uh
+
+local move = findBestMove(board, playerToWin)
+game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = ("Best Move: (" .. move[1] .. ", " .. move[2] .. ")")
+
+end
+
+
 function doting()
 -- Configuration
 local mainCharacter = uh
@@ -164,7 +308,7 @@ end
 end
 end)
 
-window:Box("Your Opponent", function(text, focuslost)
+window:Box("Your Letter", function(text, focuslost)
    if text:upper() == "X" then
 uh = "O"
 elseif text:upper() == "O" then
@@ -174,4 +318,7 @@ end
 end)
 window:Button("Predict (Connect4)", function()
 doting()
+end)
+window:Button("Predict (Tic-Tac-Toe)", function()
+yomonk()
 end)
