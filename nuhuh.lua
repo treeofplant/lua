@@ -138,4 +138,4 @@ local board = {
 
 local depth = 4 -- Adjust the depth of the search
 local bestScore, bestMove = findBestMove(board, depth, true)
-game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = tostring(bestMove)
+game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = "Column: "..tostring(bestMove)
