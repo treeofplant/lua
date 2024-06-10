@@ -142,7 +142,7 @@ local board = {
 local playerToWin = uh
 
 local move = findBestMove(board, playerToWin)
-game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = ("Best Move: (" .. move[1] .. ", " .. move[2] .. ")")
+game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = ("Best Move: X: (" .. move[2] .. ", Y: " .. move[1] .. ")")
 
 end
 
@@ -312,17 +312,18 @@ end
 end
 end)
 
-window:Box("Your Team (X,O)", function(text, focuslost)
+window:Box("Your Team", function(text, focuslost)
    if text:upper() == "X" then
-uh = "O"
-elseif text:upper() == "O" then
 uh = "X"
+elseif text:upper() == "O" then
+uh = "O"
 end
 
-end)
-window:Button("Predict (Connect4)", function()
-doting()
 end)
 window:Button("Predict (Tic-Tac-Toe)", function()
 yomonk()
 end)
+window:Button("Predict (Connect4)", function()
+doting()
+end)
+
