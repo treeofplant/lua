@@ -312,7 +312,7 @@ end
 end
 end)
 
-window:Box("Your Letter", function(text, focuslost)
+window:Box("Your Team (X,O)", function(text, focuslost)
    if text:upper() == "X" then
 uh = "O"
 elseif text:upper() == "O" then
