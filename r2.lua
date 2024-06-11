@@ -229,232 +229,244 @@ end
 end
 
 
+
 function doting()
--- Configuration
-local mainCharacter = uh
-if uh == "X" then
-    mainCharacter = "O"
-else
-    mainCharacter = "X"
-end
-
--- Function to check if a player has won
-local function checkWin(board, player)
-    -- Horizontal check
-    for row = 1, 6 do
-        for col = 1, 4 do
-            if board[row][col] == player and
-               board[row][col+1] == player and
-               board[row][col+2] == player and
-               board[row][col+3] == player then
-                return true
-            end
-        end
-    end
-    -- Vertical check
-    for col = 1, 7 do
-        for row = 1, 3 do
-            if board[row][col] == player and
-               board[row+1][col] == player and
-               board[row+2][col] == player and
-               board[row+3][col] == player then
-                return true
-            end
-        end
-    end
-    -- Diagonal check (top-left to bottom-right)
-    for row = 1, 3 do
-        for col = 1, 4 do
-            if board[row][col] == player and
-               board[row+1][col+1] == player and
-               board[row+2][col+2] == player and
-               board[row+3][col+3] == player then
-                return true
-            end
-        end
-    end
-    -- Diagonal check (top-right to bottom-left)
-    for row = 1, 3 do
-        for col = 4, 7 do
-            if board[row][col] == player and
-               board[row+1][col-1] == player and
-               board[row+2][col-2] == player and
-               board[row+3][col-3] == player then
-                return true
-            end
-        end
-    end
-    return false
-end
-
--- Function to evaluate the score of a move
-local function evaluateMove(board, column, player)
-    local tempBoard = {} -- Create a copy of the board to simulate the move
-    for i = 1, 6 do
-        tempBoard[i] = {}
-        for j = 1, 7 do
-            tempBoard[i][j] = board[i][j]
-        end
-    end
-    -- Simulate the move
-    for row = 6, 1, -1 do
-        if tempBoard[row][column] == " " then
-            tempBoard[row][column] = player
-            break
-        end
-    end
-    -- Check if the move leads to a win for the player
-    if checkWin(tempBoard, player) then
-        return math.huge
-    end
-    -- Check if the move leads to a win for the opponent
-    if checkWin(tempBoard, mainCharacter == "X" and "O" or "X") then
-        return -math.huge
-    end
-    -- Initialize the score
-    local score = 0
-    -- Heuristic: prioritize moves that create potential wins or block opponent wins
-    -- Horizontal check
-    for row = 1, 6 do
-        for col = 1, 4 do
-            local countPlayer = 0
-            local countOpponent = 0
-            for i = 0, 3 do
-                if tempBoard[row][col+i] == player then
-                    countPlayer = countPlayer + 1
-                elseif tempBoard[row][col+i] == mainCharacter then
-                    countOpponent = countOpponent + 1
-                end
-            end
-            if countPlayer == 3 and countOpponent == 0 then
-                score = score + 100
-            elseif countOpponent == 3 and countPlayer == 0 then
-                score = score - 100
-            end
-        end
-    end
-    -- Vertical check
-    for col = 1, 7 do
-        for row = 1, 3 do
-            local countPlayer = 0
-            local countOpponent = 0
-            for i = 0, 3 do
-                if tempBoard[row+i][col] == player then
-                    countPlayer = countPlayer + 1
-                elseif tempBoard[row+i][col] == mainCharacter then
-                    countOpponent = countOpponent + 1
-                end
-            end
-            if countPlayer == 3 and countOpponent == 0 then
-                score = score + 100
-            elseif countOpponent == 3 and countPlayer == 0 then
-                score = score - 100
-            end
-        end
-    end
-    -- Diagonal check (top-left to bottom-right)
-    for row = 1, 3 do
-        for col = 1, 4 do
-            local countPlayer = 0
-            local countOpponent = 0
-            for i = 0, 3 do
-                if tempBoard[row+i][col+i] == player then
-                    countPlayer = countPlayer + 1
-                elseif tempBoard[row+i][col+i] == mainCharacter then
-                    countOpponent = countOpponent + 1
-                end
-            end
-            if countPlayer == 3 and countOpponent == 0 then
-                score = score + 100
-            elseif countOpponent == 3 and countPlayer == 0 then
-                score = score - 100
-            end
-        end
-    end
-    -- Diagonal check (top-right to bottom-left)
-    for row = 1, 3 do
-        for col = 4, 7 do
-            local countPlayer = 0
-            local countOpponent = 0
-            for i = 0, 3 do
-                if tempBoard[row+i][col-i] == player then
-                    countPlayer = countPlayer + 1
-                elseif tempBoard[row+i][col-i] == mainCharacter then
-                    countOpponent = countOpponent + 1
-                end
-            end
-            if countPlayer == 3 and countOpponent == 0 then
-                score = score + 100
-            elseif countOpponent == 3 and countPlayer == 0 then
-                score = score - 100
-            end
-        end
-    end
-    return score
-end
-
--- Function to find the best move for the AI
-local function findBestMove(board, depth, maximizingPlayer)
-    local bestScore = maximizingPlayer and -math.huge or math.huge
-    local bestMove = nil
-    if depth == 0 then
-        return evaluateMove(board, nil, mainCharacter), nil
-    end
-    for column = 1, 7 do
-        if board[1][column] == " " then -- Check if the column is not full
-            local row = 1
-            while row < 6 and board[row+1][column] == " " do
-                row = row + 1
-            end
-            local score = evaluateMove(board, column, maximizingPlayer and mainCharacter or (mainCharacter == "X" and "O" or "X"))
-            if maximizingPlayer then
-                if score > bestScore then
-                    bestScore = score
-                    bestMove = column
-                end
-            else
-                if score < bestScore then
-                    bestScore = score
-                    bestMove = column
-                end
-            end
-        end
-    end
-    return bestScore, bestMove
-end
-
--- Function to retrieve the current state of the Connect 4 board
-local function get(column, row)
-
-    local gameBoard = game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.Connect4.Connect4Show.Connect4Matrix
-    local cell = gameBoard["Column_"..column].Rows["Row_"..row].TextLabel
-    if cell.BackgroundColor3 == Color3.fromRGB(0,85,255) then
-        return "O"
-    elseif cell.BackgroundColor3 == Color3.fromRGB(255,0,0) then
-        return "X"
+    -- Configuration
+    local mainCharacter = uh
+    if mainCharacter == "X" then
+        opponentCharacter = "O"
     else
-        return " "
+        opponentCharacter = "X"
     end
+
+    -- Function to check if a player has won
+    local function checkWin(board, player)
+        -- Horizontal check
+        for row = 1, 6 do
+            for col = 1, 4 do
+                if board[row][col] == player and
+                   board[row][col+1] == player and
+                   board[row][col+2] == player and
+                   board[row][col+3] == player then
+                    return true
+                end
+            end
+        end
+        -- Vertical check
+        for col = 1, 7 do
+            for row = 1, 3 do
+                if board[row][col] == player and
+                   board[row+1][col] == player and
+                   board[row+2][col] == player and
+                   board[row+3][col] == player then
+                    return true
+                end
+            end
+        end
+        -- Diagonal check (top-left to bottom-right)
+        for row = 1, 3 do
+            for col = 1, 4 do
+                if board[row][col] == player and
+                   board[row+1][col+1] == player and
+                   board[row+2][col+2] == player and
+                   board[row+3][col+3] == player then
+                    return true
+                end
+            end
+        end
+        -- Diagonal check (top-right to bottom-left)
+        for row = 1, 3 do
+            for col = 4, 7 do
+                if board[row][col] == player and
+                   board[row+1][col-1] == player and
+                   board[row+2][col-2] == player and
+                   board[row+3][col-3] == player then
+                    return true
+                end
+            end
+        end
+        return false
+    end
+
+    -- Function to evaluate the score of a move
+    local function evaluateMove(board, column, player)
+        -- Initialize the score
+        local score = 0
+
+        -- Simulate the move
+        local tempBoard = {}
+        for i = 1, 6 do
+            tempBoard[i] = {}
+            for j = 1, 7 do
+                tempBoard[i][j] = board[i][j]
+            end
+        end
+
+        local row = 6
+        while row > 0 and tempBoard[row][column] ~= " " do
+            row = row - 1
+        end
+
+        if row > 0 then
+            tempBoard[row][column] = player
+        else
+            return -math.huge  -- Illegal move, return lowest score
+        end
+
+        -- Check if the move leads to a win for the player
+        if checkWin(tempBoard, player) then
+            return math.huge
+        end
+
+        -- Check if the move leads to a win for the opponent
+        if checkWin(tempBoard, opponentCharacter) then
+            return -math.huge
+        end
+
+        -- Heuristic: prioritize moves that create potential wins or block opponent wins
+        -- Horizontal check
+        for row = 1, 6 do
+            for col = 1, 4 do
+                local countPlayer = 0
+                local countOpponent = 0
+                for i = 0, 3 do
+                    if tempBoard[row][col+i] == player then
+                        countPlayer = countPlayer + 1
+                    elseif tempBoard[row][col+i] == opponentCharacter then
+                        countOpponent = countOpponent + 1
+                    end
+                end
+                if countPlayer == 3 and countOpponent == 0 then
+                    score = score + 100
+                elseif countOpponent == 3 and countPlayer == 0 then
+                    score = score - 100
+                end
+            end
+        end
+        -- Vertical check
+        for col = 1, 7 do
+            for row = 1, 3 do
+                local countPlayer = 0
+                local countOpponent = 0
+                for i = 0, 3 do
+                    if tempBoard[row+i][col] == player then
+                        countPlayer = countPlayer + 1
+                    elseif tempBoard[row+i][col] == opponentCharacter then
+                        countOpponent = countOpponent + 1
+                    end
+                end
+                if countPlayer == 3 and countOpponent == 0 then
+                    score = score + 100
+                elseif countOpponent == 3 and countPlayer == 0 then
+                    score = score - 100
+                end
+            end
+        end
+        -- Diagonal check (top-left to bottom-right)
+        for row = 1, 3 do
+            for col = 1, 4 do
+                local countPlayer = 0
+                local countOpponent = 0
+                for i = 0, 3 do
+                    if tempBoard[row+i][col+i] == player then
+                        countPlayer = countPlayer + 1
+                    elseif tempBoard[row+i][col+i] == opponentCharacter then
+                        countOpponent = countOpponent + 1
+                    end
+                end
+                if countPlayer == 3 and countOpponent == 0 then
+                    score = score + 100
+                elseif countOpponent == 3 and countPlayer == 0 then
+                    score = score - 100
+                end
+            end
+        end
+        -- Diagonal check (top-right to bottom-left)
+        for row = 1, 3 do
+            for col = 4, 7 do
+                local countPlayer = 0
+                local countOpponent = 0
+                for i = 0, 3 do
+                    if tempBoard[row+i][col-i] == player then
+                        countPlayer = countPlayer + 1
+                    elseif tempBoard[row+i][col-i] == opponentCharacter then
+                        countOpponent = countOpponent + 1
+                    end
+                end
+                if countPlayer == 3 and countOpponent == 0 then
+                    score = score + 100
+                elseif countOpponent == 3 and countPlayer == 0 then
+                    score = score - 100
+                end
+            end
+        end
+        return score
+    end
+
+    -- Function to find the best move for the AI
+    local function findBestMove(board, depth, maximizingPlayer)
+        local bestScore = maximizingPlayer and -math.huge or math.huge
+        local bestMove = nil
+
+        if depth == 0 then
+            return evaluateMove(board, nil, mainCharacter), nil
+        end
+
+        for column = 1, 7 do
+            if board[1][column] == " " then -- Check if the column is not full
+                local row = 1
+                while row < 6 and board[row+1][column] == " " do
+                    row = row + 1
+                end
+                local score = evaluateMove(board, column, maximizingPlayer and mainCharacter or opponentCharacter)
+                if maximizingPlayer then
+                    if score > bestScore then
+                        bestScore = score
+                        bestMove = column
+                    end
+                else
+                    if score < bestScore then
+                        bestScore = score
+                        bestMove = column
+                    end
+                end
+            end
+        end
+        return bestScore, bestMove
+    end
+
+    -- Function to retrieve the current state of the Connect 4 board
+    local function get(column, row)
+        -- Code to retrieve the current state of the board, assuming it's provided elsewhere
+    end
+
+    -- Call the function to get the current game board
+    local board = {
+        {get(1,6), get(2,6), get(3,6), get(4,6), get(5,6), get(6,6), get(7,6)},
+        {get(1,5), get(2,5), get(3,5), get(4,5), get(5,5), get(6,5), get(7,5)},
+        {get(1,4), get(2,4), get(3,4), get(4,4), get(5,4), get(6,4), get(7,4)},
+        {get(1,3), get(2,3), get(3,3), get(4,3), get(5,3), get(6,3), get(7,3)},
+        {get(1,2), get(2,2), get(3,2), get(4,2), get(5,2), get(6,2), get(7,2)},
+        {get(1,1), get(2,1), get(3,1), get(4,1), get(5,1), get(6,1), get(7,1)}
+    }
+
+    local depth = 4
+    local bestScore, bestMove = findBestMove(board, depth, true)
+
+    -- Assuming you want to update the game GUI with the best move
+    game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = tostring(bestMove)
 end
 
--- Call the function to get the current game board
-local board = {
-    {get(1,6), get(2,6), get(3,6), get(4,6), get(5,6), get(6,6), get(7,6)},
-    {get(1,5), get(2,5), get(3,5), get(4,5), get(5,5), get(6,5), get(7,5)},
-    {get(1,4), get(2,4), get(3,4), get(4,4), get(5,4), get(6,4), get(7,4)},
-    {get(1,3), get(2,3), get(3,3), get(4,3), get(5,3), get(6,3), get(7,3)},
-    {get(1,2), get(2,2), get(3,2), get(4,2), get(5,2), get(6,2), get(7,2)},
-    {get(1,1), get(2,1), get(3,1), get(4,1), get(5,1), get(6,1), get(7,1)}
-}
 
 
-local depth = 4
-local bestScore, bestMove = findBestMove(board, depth, true)
-
-game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = tostring(bestMove)
 
 
-end
+
+
+
+
+
+
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/miroeramaa/TurtleLib/main/TurtleUiLib.lua"))()
 local window = library:Window("kids gambling")
