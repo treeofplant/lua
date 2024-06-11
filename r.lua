@@ -131,7 +131,22 @@ end
 return ya
 end
 
+function isempty()
+        local count = 0
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix:GetChildren()) do
+            if v:FindFirstChild("UIStroke") then
+                if v.Text ~= "" then
+                    count = count + 1
+            end
 
+            end
+
+if count == 0 then
+                return true
+            else
+                return false
+            end
+end
 
 local board = {
     {gettic("1_1"), gettic("1_2"), gettic("1_3")},
@@ -149,6 +164,13 @@ function vis(obj)
 game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[obj].BackgroundColor3 = Color3.fromRGB(170,255,255)
 end
 
+function visall()
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix:GetChildren()) do
+if v:FindFirstChild("UIStroke") then
+v.BackgroundColor3 = Color3.fromRGB(170,255,255)
+end
+end
+end
 
 function unvisall()
 for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix:GetChildren()) do
