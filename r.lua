@@ -137,6 +137,7 @@ for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicT
             if v:FindFirstChild("UIStroke") then
                 if v.Text ~= "" then
                     count = count + 1
+end
             end
 
             end
@@ -147,6 +148,8 @@ if count == 0 then
                 return false
             end
 end
+
+
 
 local board = {
     {gettic("1_1"), gettic("1_2"), gettic("1_3")},
@@ -180,6 +183,10 @@ end
 end
 end
 
+if isempty() == true then
+        visall()
+    return
+    end
 local text = best
 if string.find(text, "(1,1)") then
 unvisall()
