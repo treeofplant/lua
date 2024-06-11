@@ -436,9 +436,15 @@ function doting()
     end
 
     -- Function to retrieve the current state of the Connect 4 board
-    local function get(column, row)
-        -- Code to retrieve the current state of the board, assuming it's provided elsewhere
+    function get(column, row)
+    if game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.Connect4.Connect4Show.Connect4Matrix["Column_"..column].Rows["Row_"..row].TextLabel.BackgroundColor3 == Color3.fromRGB(0,85,255) then
+        return "O"
+    elseif game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.Connect4.Connect4Show.Connect4Matrix["Column_"..column].Rows["Row_"..row].TextLabel.BackgroundColor3 == Color3.fromRGB(255,0,0) then
+
+        return "X"
     end
+    return " "
+end
 
     -- Call the function to get the current game board
     local board = {
