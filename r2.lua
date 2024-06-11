@@ -475,7 +475,7 @@ end
 
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/miroeramaa/TurtleLib/main/TurtleUiLib.lua"))()
-local window = library:Window("kids gambling")
+local window = library:Window("Gamble Game")
 
 window:Label("Column", Color3.fromRGB(25, 219, 240))
 
