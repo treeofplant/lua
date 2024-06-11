@@ -379,7 +379,7 @@ game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = tostr
 end
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/miroeramaa/TurtleLib/main/TurtleUiLib.lua"))()
-local window = library:Window("Window")
+local window = library:Window("kids gambling")
 
 window:Label("Column", Color3.fromRGB(25, 219, 240))
 
