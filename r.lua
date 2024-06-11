@@ -158,7 +158,7 @@ end
 end
 end
 
-local text = "Best Move: (1,1)"
+local text = best
 if string.find(text, "(1,1)") then
 unvisall()
 vis("1_1")
