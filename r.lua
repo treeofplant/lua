@@ -142,7 +142,60 @@ local board = {
 local playerToWin = uh
 
 local move = findBestMove(board, playerToWin)
-game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = "Best Move: (" .. move[2] .. ", " .. move[1] .. ")"
+    local best = "Best Move: (" .. move[2] .. ", " .. move[1] .. ")"
+game:GetService("CoreGui").TurtleUiLib.UiWindow.Header.Window.Label.Text = best
+
+function vis(obj)
+game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix[obj].BackgroundColor3 = Color3.fromRGB(170,255,255)
+end
+
+
+function unvisall()
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameRooms.TicTacToe.TicTacToeShow.TicTacToeMatrix:GetChildren()) do
+if v:FindFirstChild("UIStroke") then
+v.BackgroundColor3 = Color3.fromRGB(255,255,255)
+end
+end
+end
+
+local text = "Best Move: (1,1)"
+if string.find(text, "(1,1)") then
+unvisall()
+vis("1_1")
+end
+if string.find(text, "(2,1)") then
+unvisall()
+vis("1_2")
+end
+if string.find(text, "(3,1)") then
+unvisall()
+vis("1_3")
+end
+if string.find(text, "(1,2)") then
+unvisall()
+vis("2_1")
+end
+if string.find(text, "(2,2)") then
+unvisall()
+vis("2_2")
+end
+if string.find(text, "(3,2)") then
+unvisall()
+vis("2_3")
+end
+if string.find(text, "(1,3)") then
+unvisall()
+vis("3_1")
+end
+if string.find(text, "(2,3)") then
+unvisall()
+vis("3_2")
+end
+if string.find(text, "(3,3)") then
+unvisall()
+vis("3_3")
+end
+
 
 end
 
@@ -324,7 +377,7 @@ uh = "O"
 end
 
 end)
-window:Button("Predict (Tic-Tac-Toe)", function()
+window:Button("Predict (TicTacToe)", function()
 yomonk()
 end)
 window:Button("Predict (Connect4)", function()
